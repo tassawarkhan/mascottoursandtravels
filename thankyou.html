@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You - Mascot Tours & Travel</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #003366, #0059b3);
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .thankyou-container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 50px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      z-index: 1;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #ff9900;
+      color: #fff;
+      padding: 12px 25px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #e68a00;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="thankyou-container">
+    <h1>Thank You!</h1>
+    <p>Your booking has been received. We will contact you shortly to confirm your travel details.</p>
+    <a href="index.html" class="btn">Back to Home</a>
+  </div>
+
+  <canvas id="confetti"></canvas>
+
+  <script>
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiCount = 150;
+    const confetti = [];
+
+    class Confetto {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - canvas.height;
+        this.size = Math.random() * 8 + 4;
+        this.speed = Math.random() * 3 + 2;
+        this.angle = Math.random() * 360;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      }
+      update() {
+        this.y += this.speed;
+        this.angle += 0.05;
+        if (this.y > canvas.height) this.y = -this.size;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+      }
+    }
+
+    for (let i = 0; i < confettiCount; i++) {
+      confetti.push(new Confetto());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        c.update();
+        c.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
